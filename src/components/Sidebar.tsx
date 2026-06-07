@@ -32,7 +32,7 @@ export default function Sidebar({ activePage, onNavigate }: SidebarProps) {
   return (
     <>
     {/* Desktop Sidebar */}
-    <aside className={`hidden md:flex flex-col fixed left-0 top-0 h-screen w-64 bg-[#0F111A] border-r border-slate-800 z-50 ${state.sidebarCollapsed ? '!hidden' : ''}`}>
+    <aside className={`hidden md:flex w-64 h-full flex-col border-r border-slate-800 bg-[#0F111A] flex-shrink-0 z-40 ${state.sidebarCollapsed ? '!hidden' : ''}`}>
       {/* Logo */}
       <div className="sidebar-logo">
         <div className="sidebar-logo-icon">⛓</div>
@@ -137,7 +137,7 @@ export default function Sidebar({ activePage, onNavigate }: SidebarProps) {
     </aside>
 
     {/* Mobile Bottom Navigation */}
-    <nav className="fixed bottom-0 left-0 w-full bg-[#0F111A] border-t border-slate-800 flex justify-around p-4 z-50 md:hidden">
+    <nav className="md:hidden fixed bottom-0 left-0 w-full h-16 bg-[#0F111A] border-t border-slate-800 flex justify-around items-center z-50">
       <button onClick={() => onNavigate('home')} className={`flex flex-col items-center justify-center gap-1 min-w-[64px] min-h-[44px] ${activePage === 'home' ? 'text-[var(--text-primary)]' : 'text-[var(--text-muted)]'}`}>
         <span className="text-[22px] leading-none mb-0.5">⬡</span>
         <span className="text-[10px] font-bold tracking-wide uppercase">Core</span>

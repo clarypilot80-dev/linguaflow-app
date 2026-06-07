@@ -93,15 +93,17 @@ export default function AudioPlaylistDeck() {
   if (!expanded) {
     return (
       <div 
-        className="fixed bottom-[72px] md:bottom-0 left-0 md:left-64 right-0 bg-slate-800/90 backdrop-blur-md border-t border-slate-700 p-3 flex items-center justify-center text-sm font-medium z-40 text-white cursor-pointer hover:bg-slate-700 transition-colors"
+        className="fixed bottom-16 md:bottom-0 left-0 md:left-64 right-0 h-14 bg-slate-800/95 backdrop-blur-md border-t border-slate-700 flex items-center justify-between px-6 z-40 text-sm font-medium text-white shadow-lg cursor-pointer hover:bg-slate-700 transition-all"
         onClick={() => sentences.length > 0 && setExpanded(true)}
       >
-        <span className="text-xl mr-3">🎧</span>
-        <span className="truncate">
-          {sentences.length === 0 ? "Audio Deck: Empty. Click 🎧 to build loop." : `${sentences.length} Phrases Ready ${isPlaying ? '▶ Playing' : ''}`}
-        </span>
+        <div className="flex items-center gap-3 overflow-hidden">
+          <span className="text-xl shrink-0">🎧</span>
+          <span className="truncate">
+            {sentences.length === 0 ? "Audio Deck: Empty. Click 🎧 to build loop." : `${sentences.length} Phrases Ready ${isPlaying ? '▶ Playing' : ''}`}
+          </span>
+        </div>
         {sentences.length > 0 && (
-          <span className="ml-4 text-[var(--p2)] font-bold uppercase tracking-wider text-[11px]">Expand</span>
+          <span className="ml-4 text-[var(--p2)] font-bold uppercase tracking-wider text-[11px] shrink-0">Expand</span>
         )}
       </div>
     );

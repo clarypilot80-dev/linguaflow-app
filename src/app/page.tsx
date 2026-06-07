@@ -54,7 +54,7 @@ function AppShell() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg-base)] w-full">
+    <div className="flex h-screen w-full bg-[#0F111A] overflow-hidden text-slate-200">
       <Sidebar activePage={sidebarActive} onNavigate={navigate} />
       
       {state.sidebarCollapsed && (
@@ -64,7 +64,7 @@ function AppShell() {
         >☰</button>
       )}
       
-      <div className={`w-full overflow-y-auto pb-32 md:pb-14 relative z-10 ${state.sidebarCollapsed ? '' : 'md:ml-64'}`}>
+      <div className="flex-1 h-full overflow-y-auto relative pb-24">
         {renderPage()}
       </div>
       
