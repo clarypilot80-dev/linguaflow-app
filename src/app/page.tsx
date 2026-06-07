@@ -54,24 +54,20 @@ function AppShell() {
   };
 
   return (
-    <div className="app-shell">
-      {!state.sidebarCollapsed && (
-        <Sidebar activePage={sidebarActive} onNavigate={navigate} />
-      )}
+    <div className="flex flex-col md:flex-row h-[100dvh] w-full bg-[var(--bg-base)] overflow-hidden">
+      <Sidebar activePage={sidebarActive} onNavigate={navigate} />
+      
       {state.sidebarCollapsed && (
         <button
           onClick={() => dispatch({ type: 'TOGGLE_SIDEBAR' })}
-          style={{
-            position: 'fixed', left: 14, top: 16, zIndex: 200,
-            background: 'var(--bg-card)', border: '1px solid var(--border-strong)',
-            borderRadius: 'var(--radius-sm)', width: 36, height: 36,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 16, color: 'var(--text-secondary)', cursor: 'pointer',
-            boxShadow: 'var(--shadow-card)',
-          }}
+          className="hidden md:flex fixed left-4 top-4 z-[200] bg-[var(--bg-card)] border border-[var(--border-strong)] rounded-md w-9 h-9 items-center justify-center text-[16px] text-[var(--text-secondary)] shadow-md cursor-pointer hover:bg-[var(--bg-card-hover)] transition-colors"
         >☰</button>
       )}
-      <div className="main-content">{renderPage()}</div>
+      
+      <div className="flex-1 w-full overflow-y-auto pb-32 md:pb-0 relative z-10">
+        {renderPage()}
+      </div>
+      
       <AudioPlaylistDeck />
     </div>
   );

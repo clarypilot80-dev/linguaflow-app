@@ -79,10 +79,10 @@ function DialogueCard({ dialogue, collectionColor, onStart, isPinned, onTogglePi
               {s.stars >= 4 && <span style={{ fontSize: 10, color: 'var(--p3)' }}>★★★★</span>}
               <button
                 onClick={(e) => onTogglePin(s.id, e)}
-                style={{ background: 'none', border: 'none', fontSize: 14, cursor: 'pointer', opacity: isPinned(s.id) ? 1 : 0.4 }}
-                title="Pin to Audio Deck"
+                style={{ background: 'none', border: 'none', fontSize: 16, cursor: 'pointer', opacity: isPinned(s.id) ? 1 : 0.4, color: isPinned(s.id) ? 'var(--p2)' : 'inherit', transition: 'opacity 0.2s, color 0.2s' }}
+                title={isPinned(s.id) ? 'Remove from Audio Deck' : 'Add to Audio Deck'}
               >
-                {isPinned(s.id) ? '📌' : '📍'}
+                🎧
               </button>
             </div>
           </div>

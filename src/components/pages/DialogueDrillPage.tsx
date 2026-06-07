@@ -145,10 +145,10 @@ function StudyCard({ sentence, lang, collectionColor, onAudioClick, isPinned, on
         <div style={{ display: 'flex', gap: 8 }}>
           <button
             onClick={onTogglePin}
-            style={{ width: 44, height: 44, borderRadius: 12, background: isPinned ? 'var(--p1-dim)' : 'var(--bg-surface)', border: `1px solid ${isPinned ? 'var(--p1)' : 'var(--border)'}`, fontSize: 18, cursor: 'pointer', transition: 'all .15s' }}
-            title={isPinned ? 'Unpin from Audio Deck' : 'Pin to Audio Deck'}
+            style={{ width: 44, height: 44, borderRadius: 12, background: isPinned ? 'var(--p2-dim)' : 'var(--bg-surface)', border: `1px solid ${isPinned ? 'var(--p2)' : 'var(--border)'}`, fontSize: 18, cursor: 'pointer', transition: 'all .15s', opacity: isPinned ? 1 : 0.6, color: isPinned ? 'var(--p2)' : 'inherit' }}
+            title={isPinned ? 'Remove from Audio Deck' : 'Add to Audio Deck'}
           >
-            {isPinned ? '📌' : '📍'}
+            🎧
           </button>
           <TTSButton text={sentence.text} lang={lang} onAudioClick={onAudioClick} size="lg" />
         </div>
@@ -255,10 +255,10 @@ function QuizCard({ sentence, lang, collectionColor, onAudioClick, onRate, onRev
         <div style={{ display: 'flex', gap: 8, opacity: revealed ? 1 : 0, transition: 'opacity .2s', pointerEvents: revealed ? 'auto' : 'none' }}>
           <button
             onClick={onTogglePin}
-            style={{ width: 34, height: 34, borderRadius: 8, background: isPinned ? 'var(--p1-dim)' : 'var(--bg-surface)', border: `1px solid ${isPinned ? 'var(--p1)' : 'var(--border)'}`, fontSize: 14, cursor: 'pointer', transition: 'all .15s' }}
-            title={isPinned ? 'Unpin from Audio Deck' : 'Pin to Audio Deck'}
+            style={{ width: 34, height: 34, borderRadius: 8, background: isPinned ? 'var(--p2-dim)' : 'var(--bg-surface)', border: `1px solid ${isPinned ? 'var(--p2)' : 'var(--border)'}`, fontSize: 14, cursor: 'pointer', transition: 'all .15s', opacity: isPinned ? 1 : 0.6, color: isPinned ? 'var(--p2)' : 'inherit' }}
+            title={isPinned ? 'Remove from Audio Deck' : 'Add to Audio Deck'}
           >
-            {isPinned ? '📌' : '📍'}
+            🎧
           </button>
           <TTSButton text={sentence.text} lang={lang} onAudioClick={onAudioClick} size="md" />
         </div>

@@ -28,6 +28,9 @@ export default function AudioPlaylistDeck() {
     if (currentIndex >= sentences.length && sentences.length > 0) {
       setCurrentIndex(0);
     }
+    if (sentences.length === 0) {
+      setExpanded(false);
+    }
   }, [sentences.length, currentIndex]);
 
   // Main playback loop engine
@@ -85,126 +88,123 @@ export default function AudioPlaylistDeck() {
     };
   }, [isPlaying, state.currentLang.code, state.playlistLoopMode, dispatch]);
 
-  if (sentences.length === 0) return null;
-
   const currentSentence = sentences[currentIndex];
 
   return (
-    <div style={{
-      position: 'fixed',
-      bottom: 24,
-      right: 24,
-      width: expanded ? 320 : 64,
-      height: expanded ? 400 : 64,
-      background: 'var(--bg-card)',
-      border: '1px solid var(--border)',
-      borderRadius: expanded ? 24 : 32,
-      boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
-      overflow: 'hidden',
-      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-      zIndex: 1000,
-      display: 'flex',
-      flexDirection: 'column',
-    }}>
+    <div className={`
+      fixed z-[1000] flex flex-col overflow-hidden bg-[var(--bg-card)] border border-[var(--border)]
+      transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]
+      ${expanded
+        ? 'md:bottom-6 md:right-6 md:w-[320px] md:h-[400px] md:rounded-[24px] bottom-[calc(env(safe-area-inset-bottom)+96px)] left-3 right-3 max-h-[50vh] rounded-[24px] shadow-[0_8px_32px_rgba(0,0,0,0.15)]'
+        : 'md:bottom-6 md:right-6 md:w-auto md:min-w-[280px] md:h-14 md:rounded-full bottom-[calc(env(safe-area-inset-bottom)+76px)] left-2 right-2 h-14 rounded-xl shadow-md'
+      }
+    `}>
       {/* Minimized View */}
       {!expanded ? (
-        <button
-          onClick={() => setExpanded(true)}
-          style={{ width: '100%', height: '100%', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}
+        <div
+          onClick={() => sentences.length > 0 && setExpanded(true)}
+          className={`w-full h-full flex items-center justify-between px-5 ${sentences.length > 0 ? 'cursor-pointer hover:bg-[var(--bg-card-hover)]' : ''} transition-colors`}
         >
-          {isPlaying ? (trackState === 'pause' ? '⏳' : '🔊') : '🎵'}
-        </button>
+          <div className="flex items-center gap-3 overflow-hidden">
+            <span className="text-xl shrink-0">🎧</span>
+            <span className="text-sm font-medium text-[var(--text-secondary)] truncate">
+              {sentences.length === 0 ? "Audio Deck: Empty. Click 🎧 to build loop." : `${sentences.length} Phrases Ready ${isPlaying ? '▶' : ''}`}
+            </span>
+          </div>
+          {sentences.length > 0 && (
+            <button className="bg-transparent border-none text-[var(--p2)] font-bold cursor-pointer shrink-0 ml-2">
+              Expand
+            </button>
+          )}
+        </div>
       ) : (
         /* Expanded View */
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <div className="flex flex-col h-full">
           
           {/* Header */}
-          <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-surface)' }}>
-            <div style={{ fontWeight: 700, fontSize: 14 }}>Audio Deck</div>
-            <button onClick={() => setExpanded(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16 }}>⤵</button>
+          <div className="px-5 py-4 border-b border-[var(--border)] flex items-center justify-between bg-[var(--bg-surface)]">
+            <div className="font-bold text-sm">Audio Deck</div>
+            <button onClick={() => setExpanded(false)} className="w-10 h-10 -mr-2 flex items-center justify-center text-base bg-transparent border-none cursor-pointer">⤵</button>
           </div>
 
           {/* Now Playing Area */}
-          <div style={{ padding: 20, textAlign: 'center', borderBottom: '1px solid var(--border)', background: 'var(--bg-card)' }}>
-            <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.1em', color: 'var(--text-muted)', marginBottom: 8 }}>
+          <div className="p-5 text-center border-b border-[var(--border)] bg-[var(--bg-card)] shrink-0">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] mb-2">
               {trackState === 'french' && '▶ Playing Target'}
               {trackState === 'pause' && '⏳ Shadow Now'}
               {trackState === 'english' && '▶ Translation'}
               {trackState === 'idle' && 'Paused'}
             </div>
             
-            <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 8, color: trackState === 'french' ? 'var(--p2)' : 'var(--text-primary)', transition: 'color .2s' }}>
+            <div className="text-lg font-extrabold mb-2 transition-colors duration-200 truncate px-2" style={{ color: trackState === 'french' ? 'var(--p2)' : 'var(--text-primary)' }}>
               {currentSentence?.text || 'No track'}
             </div>
             
-            <div style={{ fontSize: 14, color: trackState === 'english' ? 'var(--p1)' : 'var(--text-muted)', fontStyle: 'italic', transition: 'color .2s' }}>
+            <div className="text-sm italic transition-colors duration-200 truncate px-2" style={{ color: trackState === 'english' ? 'var(--p1)' : 'var(--text-muted)' }}>
               {currentSentence?.translation || ''}
             </div>
           </div>
 
           {/* Controls */}
-          <div style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
+          <div className="px-5 py-4 flex items-center justify-around shrink-0">
             <button
               onClick={() => setCurrentIndex(i => i > 0 ? i - 1 : sentences.length - 1)}
-              style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--text-secondary)' }}
+              className="w-12 h-12 flex items-center justify-center text-xl cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
             >⏮</button>
             
             <button
               onClick={() => dispatch({ type: 'SET_PLAYLIST_PLAYING', playing: !isPlaying })}
-              style={{ width: 48, height: 48, borderRadius: 24, background: 'var(--p2)', border: 'none', color: '#fff', fontSize: 20, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              className="w-14 h-14 rounded-full bg-[var(--p2)] border-none text-white text-xl cursor-pointer flex items-center justify-center shadow-md hover:scale-105 transition-transform"
             >
               {isPlaying ? '⏸' : '▶'}
             </button>
             
             <button
               onClick={() => setCurrentIndex(i => i < sentences.length - 1 ? i + 1 : 0)}
-              style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--text-secondary)' }}
+              className="w-12 h-12 flex items-center justify-center text-xl cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
             >⏭</button>
           </div>
 
           {/* Playlist Queue */}
-          <div style={{ flex: 1, overflowY: 'auto', padding: 8, background: 'var(--bg-base)' }}>
+          <div className="flex-1 overflow-y-auto p-2 bg-[var(--bg-base)]">
             {sentences.map((s, idx) => (
               <div
                 key={s.id}
                 onClick={() => setCurrentIndex(idx)}
-                style={{
-                  padding: '10px 12px', borderRadius: 8, cursor: 'pointer',
-                  background: idx === currentIndex ? 'var(--bg-card)' : 'transparent',
-                  border: idx === currentIndex ? '1px solid var(--border)' : '1px solid transparent',
-                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  marginBottom: 4
-                }}
+                className={`
+                  px-3 py-2.5 rounded-lg cursor-pointer flex items-center justify-between mb-1
+                  ${idx === currentIndex ? 'bg-[var(--bg-card)] border border-[var(--border)]' : 'border border-transparent'}
+                `}
               >
-                <div style={{ fontSize: 13, fontWeight: idx === currentIndex ? 700 : 500, color: idx === currentIndex ? 'var(--text-primary)' : 'var(--text-secondary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <div className={`text-[13px] whitespace-nowrap overflow-hidden text-ellipsis ${idx === currentIndex ? 'font-bold text-[var(--text-primary)]' : 'font-medium text-[var(--text-secondary)]'}`}>
                   {s.text}
                 </div>
                 <button
                   onClick={(e) => { e.stopPropagation(); dispatch({ type: 'TOGGLE_PIN_SENTENCE', sentenceId: s.id }); }}
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-dim)', fontSize: 14 }}
+                  className="w-8 h-8 flex items-center justify-center -mr-2 bg-transparent border-none cursor-pointer text-[var(--text-dim)] text-sm"
                 >✖</button>
               </div>
             ))}
           </div>
           
           {/* Footer actions */}
-          <div style={{ padding: '12px 20px', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-surface)' }}>
-            <div style={{ display: 'flex', gap: 12 }}>
+          <div className="px-5 py-3 border-t border-[var(--border)] flex justify-between items-center bg-[var(--bg-surface)] shrink-0">
+            <div className="flex gap-1">
               <button
                 onClick={() => dispatch({ type: 'SET_PLAYLIST_LOOP_MODE', loop: !loopMode })}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, opacity: loopMode ? 1 : 0.4 }}
+                className={`w-10 h-10 flex items-center justify-center bg-transparent border-none cursor-pointer text-base ${loopMode ? 'opacity-100' : 'opacity-40'}`}
                 title="Toggle Loop"
               >🔁</button>
               <button
                 onClick={() => dispatch({ type: 'SET_PLAYLIST_SPEAK_ENGLISH', speak: !speakEnglish })}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, opacity: speakEnglish ? 1 : 0.4 }}
+                className={`w-10 h-10 flex items-center justify-center bg-transparent border-none cursor-pointer text-base ${speakEnglish ? 'opacity-100' : 'opacity-40'}`}
                 title="Toggle English Translation Audio"
               >🇬🇧</button>
             </div>
             
             <button
               onClick={() => dispatch({ type: 'CLEAR_PLAYLIST' })}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 12, color: 'var(--text-muted)', fontWeight: 600 }}
+              className="h-10 px-3 flex items-center justify-center bg-transparent border-none cursor-pointer text-xs text-[var(--text-muted)] font-semibold"
             >Clear All</button>
           </div>
 

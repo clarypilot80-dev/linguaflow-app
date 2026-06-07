@@ -30,7 +30,9 @@ export default function Sidebar({ activePage, onNavigate }: SidebarProps) {
   const toggleTheme = () => dispatch({ type: 'SET_THEME', theme: isDark ? 'light' : 'dark' });
 
   return (
-    <aside className="sidebar">
+    <>
+    {/* Desktop Sidebar */}
+    <aside className={`sidebar hidden md:flex flex-col shrink-0 ${state.sidebarCollapsed ? '!hidden' : ''}`}>
       {/* Logo */}
       <div className="sidebar-logo">
         <div className="sidebar-logo-icon">⛓</div>
@@ -133,5 +135,26 @@ export default function Sidebar({ activePage, onNavigate }: SidebarProps) {
         <button className="collapse-btn" onClick={() => dispatch({ type: 'TOGGLE_SIDEBAR' })}>‹ Collapse sidebar</button>
       </div>
     </aside>
+
+    {/* Mobile Bottom Navigation */}
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around bg-[var(--bg-card)] border-t border-[var(--border)] pb-[calc(env(safe-area-inset-bottom)+8px)] pt-3 px-2 shadow-[0_-8px_30px_rgba(0,0,0,0.06)]">
+      <button onClick={() => onNavigate('home')} className={`flex flex-col items-center justify-center gap-1 min-w-[64px] min-h-[44px] ${activePage === 'home' ? 'text-[var(--text-primary)]' : 'text-[var(--text-muted)]'}`}>
+        <span className="text-[22px] leading-none mb-0.5">⬡</span>
+        <span className="text-[10px] font-bold tracking-wide uppercase">Core</span>
+      </button>
+      <button onClick={() => onNavigate('reference')} className={`flex flex-col items-center justify-center gap-1 min-w-[64px] min-h-[44px] ${activePage === 'reference' ? 'text-[var(--text-primary)]' : 'text-[var(--text-muted)]'}`}>
+        <span className="text-[22px] leading-none mb-0.5">⊞</span>
+        <span className="text-[10px] font-bold tracking-wide uppercase">Guide</span>
+      </button>
+      <button onClick={() => onNavigate('home')} className={`flex flex-col items-center justify-center gap-1 min-w-[64px] min-h-[44px] ${activePage === 'island' ? 'text-[var(--text-primary)]' : 'text-[var(--text-muted)]'}`}>
+        <span className="text-[22px] leading-none mb-0.5 opacity-80">🏝️</span>
+        <span className="text-[10px] font-bold tracking-wide uppercase">Islands</span>
+      </button>
+      <button onClick={() => onNavigate('stats')} className={`flex flex-col items-center justify-center gap-1 min-w-[64px] min-h-[44px] ${activePage === 'stats' ? 'text-[var(--text-primary)]' : 'text-[var(--text-muted)]'}`}>
+        <span className="text-[22px] leading-none mb-0.5">◈</span>
+        <span className="text-[10px] font-bold tracking-wide uppercase">Stats</span>
+      </button>
+    </nav>
+    </>
   );
 }
