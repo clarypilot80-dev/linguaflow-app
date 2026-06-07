@@ -24,8 +24,8 @@ export interface AppState {
   _version: number;
 }
 
-const STORAGE_KEY = 'linguaflow-v4';
-const SCHEMA_VERSION = 4;
+const STORAGE_KEY = 'linguaflow-v5';
+const SCHEMA_VERSION = 5;
 
 function initialPhaseStatuses(): Record<PhaseId, PhaseStatus> {
   return { control: 'active', connect: 'active', expand: 'active' };

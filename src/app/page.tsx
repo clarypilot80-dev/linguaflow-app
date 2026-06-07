@@ -47,8 +47,8 @@ function AppShell() {
       case 'analyzer':   return <AnalyzerPage onNavigate={navigate} />;
       case 'stats':      return <StatsPage onNavigate={navigate} />;
       case 'reference':  return <GuidePage onNavigate={navigate} />;
-      case 'collection': return <CollectionPage collectionId={params.collectionId ?? 'core-100-vol1'} onNavigate={navigate} />;
-      case 'dialogue':   return <DialogueDrillPage collectionId={params.collectionId ?? 'core-100-vol1'} dialogueId={params.dialogueId ?? 'dial-reactions'} onNavigate={navigate} />;
+      case 'collection': return <CollectionPage collectionId={params.collectionId ?? 'phase-1-engine'} onNavigate={navigate} />;
+      case 'dialogue':   return <DialogueDrillPage collectionId={params.collectionId ?? 'phase-1-engine'} dialogueId={params.dialogueId ?? 'dial-state-possession'} onNavigate={navigate} />;
       default:           return <HomePage onNavigate={navigate} />;
     }
   };
