@@ -90,35 +90,26 @@ export default function AudioPlaylistDeck() {
 
   const currentSentence = sentences[currentIndex];
 
+  if (!expanded) {
+    return (
+      <div 
+        className="fixed bottom-[72px] md:bottom-0 left-0 md:left-64 right-0 bg-slate-800/90 backdrop-blur-md border-t border-slate-700 p-3 flex items-center justify-center text-sm font-medium z-40 text-white cursor-pointer hover:bg-slate-700 transition-colors"
+        onClick={() => sentences.length > 0 && setExpanded(true)}
+      >
+        <span className="text-xl mr-3">🎧</span>
+        <span className="truncate">
+          {sentences.length === 0 ? "Audio Deck: Empty. Click 🎧 to build loop." : `${sentences.length} Phrases Ready ${isPlaying ? '▶ Playing' : ''}`}
+        </span>
+        {sentences.length > 0 && (
+          <span className="ml-4 text-[var(--p2)] font-bold uppercase tracking-wider text-[11px]">Expand</span>
+        )}
+      </div>
+    );
+  }
+
   return (
-    <div className={`
-      fixed z-[1000] flex flex-col overflow-hidden bg-[var(--bg-card)] border border-[var(--border)]
-      transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]
-      ${expanded
-        ? 'md:bottom-6 md:right-6 md:w-[320px] md:h-[400px] md:rounded-[24px] bottom-[calc(env(safe-area-inset-bottom)+96px)] left-3 right-3 max-h-[50vh] rounded-[24px] shadow-[0_8px_32px_rgba(0,0,0,0.15)]'
-        : 'md:bottom-6 md:right-6 md:w-auto md:min-w-[280px] md:h-14 md:rounded-full bottom-[calc(env(safe-area-inset-bottom)+76px)] left-2 right-2 h-14 rounded-xl shadow-md'
-      }
-    `}>
-      {/* Minimized View */}
-      {!expanded ? (
-        <div
-          onClick={() => sentences.length > 0 && setExpanded(true)}
-          className={`w-full h-full flex items-center justify-between px-5 ${sentences.length > 0 ? 'cursor-pointer hover:bg-[var(--bg-card-hover)]' : ''} transition-colors`}
-        >
-          <div className="flex items-center gap-3 overflow-hidden">
-            <span className="text-xl shrink-0">🎧</span>
-            <span className="text-sm font-medium text-[var(--text-secondary)] truncate">
-              {sentences.length === 0 ? "Audio Deck: Empty. Click 🎧 to build loop." : `${sentences.length} Phrases Ready ${isPlaying ? '▶' : ''}`}
-            </span>
-          </div>
-          {sentences.length > 0 && (
-            <button className="bg-transparent border-none text-[var(--p2)] font-bold cursor-pointer shrink-0 ml-2">
-              Expand
-            </button>
-          )}
-        </div>
-      ) : (
-        /* Expanded View */
+    <div className="fixed z-[1000] flex flex-col overflow-hidden bg-[var(--bg-card)] border border-[var(--border)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] md:bottom-6 md:right-6 md:w-[320px] md:h-[400px] md:rounded-[24px] bottom-[calc(env(safe-area-inset-bottom)+96px)] left-3 right-3 max-h-[50vh] rounded-[24px] shadow-[0_8px_32px_rgba(0,0,0,0.15)]">
+      {/* Expanded View */}
         <div className="flex flex-col h-full">
           
           {/* Header */}
@@ -209,7 +200,6 @@ export default function AudioPlaylistDeck() {
           </div>
 
         </div>
-      )}
     </div>
   );
 }
