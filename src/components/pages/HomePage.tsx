@@ -23,57 +23,54 @@ function PhaseStrip({ phase, status, onNavigate, onDefer, onResume }: {
   const isCompleted = status === 'completed';
 
   return (
-    <div style={{
-      background: 'var(--bg-card)',
-      border: `1px solid ${isCompleted ? 'rgba(5,150,105,0.2)' : isDeferred ? 'rgba(217,119,6,0.15)' : 'var(--border)'}`,
-      borderRadius: 'var(--radius-lg)',
-      padding: '16px 20px',
-      display: 'grid',
-      gridTemplateColumns: 'auto 1fr auto',
-      alignItems: 'center',
-      gap: 16,
-      boxShadow: 'var(--shadow-card)',
-      transition: 'box-shadow .2s',
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+    <div
+      className={`flex items-center gap-2 md:gap-4 p-3 md:p-5 rounded-[var(--radius-lg)] shadow-[var(--shadow-card)] transition-shadow bg-[var(--bg-card)] border ${
+        isCompleted ? 'border-emerald-500/20' : isDeferred ? 'border-amber-500/15' : 'border-[var(--border)]'
+      }`}
+    >
+      <div className="flex items-center gap-2 md:gap-3 shrink-0">
         <div style={{
           width: 40, height: 40, borderRadius: 10,
           background: `${phase.color}12`,
           border: `1px solid ${phase.color}22`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 18, flexShrink: 0,
           opacity: isDeferred ? 0.5 : 1,
-        }}>{phase.icon}</div>
-        <div>
-          <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, fontWeight: 700, letterSpacing: '.15em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 2 }}>Phase {phase.number}</div>
-          <div style={{ fontWeight: 700, fontSize: 14, color: isDeferred ? 'var(--text-muted)' : 'var(--text-primary)' }}>{phase.name}</div>
+        }} className="flex items-center justify-center text-lg shrink-0">
+          {phase.icon}
+        </div>
+        <div className="hidden sm:block">
+          <div className="font-mono text-[9px] font-bold tracking-[.15em] uppercase text-[var(--text-muted)] mb-0.5">Phase {phase.number}</div>
+          <div className={`font-bold text-sm ${isDeferred ? 'text-[var(--text-muted)]' : 'text-[var(--text-primary)]'}`}>{phase.name}</div>
         </div>
       </div>
 
-      <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-          <span style={{ fontSize: 11, fontFamily: 'JetBrains Mono, monospace', color: isCompleted ? 'var(--p3)' : isDeferred ? 'var(--p1)' : phase.color, fontWeight: 700 }}>
+      <div className="flex-1 min-w-0">
+        <div className="sm:hidden mb-1">
+          <div className="font-mono text-[9px] font-bold tracking-[.15em] uppercase text-[var(--text-muted)] mb-0.5">Phase {phase.number}</div>
+          <div className={`font-bold text-sm truncate ${isDeferred ? 'text-[var(--text-muted)]' : 'text-[var(--text-primary)]'}`}>{phase.name}</div>
+        </div>
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-1.5 gap-0.5 md:gap-0">
+          <span className="text-[10px] md:text-[11px] font-mono font-bold truncate" style={{ color: isCompleted ? 'var(--p3)' : isDeferred ? 'var(--p1)' : phase.color }}>
             {isCompleted ? '✓ Complete' : isDeferred ? '⏸ Deferred' : '● Active'}
           </span>
-          <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{mastered}/{total} mastered</span>
+          <span className="text-[10px] md:text-[11px] text-[var(--text-muted)] whitespace-nowrap">{mastered}/{total} mastered</span>
         </div>
-        <div style={{ height: 4, background: 'var(--bg-progress-track)', borderRadius: 2, overflow: 'hidden' }}>
-          <div style={{ height: '100%', width: `${pct}%`, background: isCompleted ? 'var(--p3)' : isDeferred ? 'var(--p1)' : phase.color, borderRadius: 2, transition: 'width .6s ease' }} />
+        <div className="h-1 bg-[var(--bg-progress-track)] rounded-full overflow-hidden">
+          <div className="h-full rounded-full transition-all duration-500 ease-out" style={{ width: `${pct}%`, background: isCompleted ? 'var(--p3)' : isDeferred ? 'var(--p1)' : phase.color }} />
         </div>
         {phase.id === 'expand' && (
-          <div style={{ fontSize: 9, color: 'var(--text-muted)', marginTop: 5, fontFamily: 'JetBrains Mono, monospace', textTransform: 'uppercase', letterSpacing: '.1em' }}>Optional — never blocks progression</div>
+          <div className="text-[8px] md:text-[9px] text-[var(--text-muted)] mt-1.5 font-mono uppercase tracking-[.1em] truncate">Optional — never blocks progression</div>
         )}
       </div>
 
-      <div style={{ display: 'flex', gap: 6 }}>
+      <div className="flex gap-1.5 md:gap-2 shrink-0">
         {isDeferred ? (
-          <button onClick={() => onResume(phase.id)} style={{ background: 'var(--p1-dim)', border: '1px solid var(--p1-border)', color: 'var(--p1)', borderRadius: 8, padding: '7px 12px', fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>Resume</button>
+          <button onClick={() => onResume(phase.id)} style={{ background: 'var(--p1-dim)', border: '1px solid var(--p1-border)', color: 'var(--p1)' }} className="rounded-lg px-2.5 py-1.5 md:px-3 md:py-2 text-[10px] md:text-[11px] font-bold cursor-pointer">Resume</button>
         ) : isCompleted ? (
-          <button onClick={() => onNavigate('phase', { phaseId: phase.id })} style={{ background: 'var(--p3-dim)', border: '1px solid var(--p3-border)', color: 'var(--p3)', borderRadius: 8, padding: '7px 12px', fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>Review</button>
+          <button onClick={() => onNavigate('phase', { phaseId: phase.id })} style={{ background: 'var(--p3-dim)', border: '1px solid var(--p3-border)', color: 'var(--p3)' }} className="rounded-lg px-2.5 py-1.5 md:px-3 md:py-2 text-[10px] md:text-[11px] font-bold cursor-pointer">Review</button>
         ) : (
           <>
-            <button onClick={() => onNavigate('phase', { phaseId: phase.id })} style={{ background: `${phase.color}12`, border: `1px solid ${phase.color}22`, color: phase.color, borderRadius: 8, padding: '7px 12px', fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>Continue →</button>
-            <button onClick={() => onDefer(phase.id)} title="Save for later" style={{ background: 'transparent', border: '1px solid var(--border)', color: 'var(--text-muted)', borderRadius: 8, padding: '7px 10px', fontSize: 11, cursor: 'pointer' }}>⏸</button>
+            <button onClick={() => onNavigate('phase', { phaseId: phase.id })} style={{ background: `${phase.color}12`, border: `1px solid ${phase.color}22`, color: phase.color }} className="rounded-lg px-2.5 py-1.5 md:px-3 md:py-2 text-[10px] md:text-[11px] font-bold cursor-pointer">Continue →</button>
+            <button onClick={() => onDefer(phase.id)} title="Save for later" style={{ color: 'var(--text-muted)' }} className="bg-transparent border border-[var(--border)] rounded-lg px-2 py-1.5 md:px-2.5 md:py-2 text-[10px] md:text-[11px] cursor-pointer hidden sm:block">⏸</button>
           </>
         )}
       </div>
